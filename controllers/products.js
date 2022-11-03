@@ -5,7 +5,7 @@ const getAllProductsStatic = async (req, res) => {
   res.status(200).json({ msg: products, nbHits: products.length });
 };
 const getAllProducts = async (req, res) => {
-  const { featured, company } = req.query;
+  const { featured, company, name } = req.query;
 
   const queryObj = {};
 
@@ -15,6 +15,10 @@ const getAllProducts = async (req, res) => {
 
   if (company) {
     queryObj.company = company;
+  }
+
+  if (name) {
+    queryObj.name = { $regex: name, $options: "i" };
   }
 
   const products = await Product.find(queryObj);
